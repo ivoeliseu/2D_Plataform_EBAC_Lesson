@@ -38,11 +38,11 @@ public class Player : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftControl)) ? -runningVelocity : -moveVelocity, rb.velocity.y);
+            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? -runningVelocity : -moveVelocity, rb.velocity.y);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftControl)) ? +runningVelocity : moveVelocity, rb.velocity.y);
+            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? +runningVelocity : moveVelocity, rb.velocity.y);
         }
 
         // Desaceleração
