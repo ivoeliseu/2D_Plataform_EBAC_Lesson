@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     public string boolRun = "Run";
     public string boolJump = "Jump";
     public Animator animator;
-    public float swipeSideDuration = .1f;
+    public float swipeSideDuration = 0;
     public bool landed = false;
     public string lookingTag = "Ground";
 
@@ -59,16 +59,17 @@ public class Player : MonoBehaviour
             animator.SetBool(boolRun, true);
             if (rb.transform.localScale.x != -1)
             {
-                rb.transform.DOScaleX(-1, swipeSideDuration);
-            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? -runningVelocity : -moveVelocity, rb.velocity.y);
+                rb.transform.DOScaleX(-1f, swipeSideDuration);
             }
+
+            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? -runningVelocity : -moveVelocity, rb.velocity.y);
         }
         else if (Input.GetKey(moveRightInput))
         {
             animator.SetBool(boolRun, true);
             if (rb.transform.localScale.x != 1)
             {
-                rb.transform.DOScaleX(1, swipeSideDuration);
+                rb.transform.DOScaleX(1f, swipeSideDuration);
             }
             
             rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? +runningVelocity : moveVelocity, rb.velocity.y);
@@ -81,7 +82,7 @@ public class Player : MonoBehaviour
         // Se verificar que Input de correr está pressionado, muda a velocidade da animação
         if (Input.GetKey(runningInput)) 
         {
-            animator.speed = 3f;
+            animator.speed = 2.5f;
         }
         else
         {
