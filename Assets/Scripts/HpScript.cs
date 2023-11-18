@@ -1,24 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HpScript : MonoBehaviour
 {
+    public Action OnKill;
+
     public int startHp = 1;
-    public bool destroyOnKill = false;
+    public bool destroyOnKill = true;
+    public float delayToKill = 2f;
     private int _currentLife;
     private bool _isDead = false;
-    
+
+    [SerializeField] private FlashColor _flashColor;
+
 
     private void Awake()
     {
         Init();
+        if (_flashColor == null)
+        {
+            _flashColor = GetComponent<FlashColor>();
+        }
     }
 
     private void Init()
     {
         _isDead = false;
-        _currentLife = 1;
+        _currentLife = startHp;
     }
 
     public void Damage(int damage)
@@ -27,18 +37,26 @@ public class HpScript : MonoBehaviour
 
         _currentLife -= damage;
 
-        if (_currentLife <= 0 ) 
+        if (_currentLife <= 0)
         {
             Kill();
+        }
+
+        if (_flashColor != null)
+        {
+            _flashColor.Flash();
         }
     }
 
     private void Kill()
     {
         _isDead = true;
-        if(destroyOnKill)
+        if (destroyOnKill)
         {
             Destroy(gameObject);
+            Destroy(gameObject, delayToKill);
         }
+
+        OnKill.Invoke();
     }
 }

@@ -1,19 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class ItemManager : MonoBehaviour
+public class ItemManager : Singleton<ItemManager>
 {
-    public static ItemManager Instance;
     public int coins;
-
-    private void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-    }
+    public string compareTag = "Coins";
+    public HudManager hudManager;
 
     private void Start()
     {
@@ -25,8 +20,10 @@ public class ItemManager : MonoBehaviour
         coins = 0;
     }
 
-    public void AddCoins(int amount = 1)
+    public void AddCoins()
     {
         coins++;
+        hudManager.UpdateCoins(coins);
     }
+
 }

@@ -7,28 +7,19 @@ using System;
 
 public class Player : MonoBehaviour
 {
+    public HpScript healthBase;
     public Rigidbody2D rb;
+
     [Header("Moviment Setup")]
     public float moveVelocity = 15f;
     public float runningVelocity = 30f;
     public float jumpForce = 30f;
-
-    /* *** ANTIGA CODIFICAÇÃO DE ANIMAÇÃO ***
-    
-    [Header("Animation Setup")]
-    
-    public float jumpScaleY = 3f;
-    public float jumpScaleX = .75f;
-    public float landedScaleY = .75f;
-    public float landedScaleX = .3f;
-    public float animationDuration = .3f;
-    public Ease ease = Ease.OutBack;
-
-    */
+    public Vector2 friction = new Vector2(.1f, 0);
 
     [Header("Animation Player")]
     public string boolRun = "Run";
     public string boolJump = "Jump";
+    public string triggerDeath = "Death";
     public Animator animator;
     public float swipeSideDuration = 0;
     public bool landed = false;
@@ -40,11 +31,26 @@ public class Player : MonoBehaviour
     public KeyCode moveLeftInput = KeyCode.LeftArrow;
     public KeyCode moveRightInput = KeyCode.RightArrow;
     public KeyCode runningInput = KeyCode.LeftShift;
-    
 
 
-    public Vector2 friction = new Vector2(.1f, 0);
+    private void Awake()
+    {
+        if (healthBase != null)
+        {
+            healthBase.OnKill += OnPlayerKill;
+        }
 
+        if (healthBase == null)
+        {
+            healthBase = GetComponent<HpScript>();
+        }
+    }
+
+    private void OnPlayerKill()
+    {
+        healthBase.OnKill -= OnPlayerKill;
+        animator.SetTrigger(triggerDeath);
+    }
     void Update()
     {
         PlayerJump();
@@ -71,7 +77,7 @@ public class Player : MonoBehaviour
             {
                 rb.transform.DOScaleX(1f, swipeSideDuration);
             }
-            
+
             rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? +runningVelocity : moveVelocity, rb.velocity.y);
         }
         else
@@ -80,7 +86,7 @@ public class Player : MonoBehaviour
         }
 
         // Se verificar que Input de correr está pressionado, muda a velocidade da animação
-        if (Input.GetKey(runningInput)) 
+        if (Input.GetKey(runningInput))
         {
             animator.speed = 2.5f;
         }
@@ -91,7 +97,7 @@ public class Player : MonoBehaviour
 
         // Desaceleração
         // No objeto dentro da Unity é necessário o objeto da plataforma ter um material de physics
-        if(rb.velocity.x > 0)
+        if (rb.velocity.x > 0)
         {
             rb.velocity -= friction;
         }
@@ -152,5 +158,11 @@ public class Player : MonoBehaviour
             landed = true;
         }
     }
+
+    public void DestroyMe()
+    {
+        Destroy(gameObject);
+    }
+
     
 }
