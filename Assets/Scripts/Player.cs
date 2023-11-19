@@ -9,11 +9,11 @@ public class Player : MonoBehaviour
 {
     public HpScript healthBase;
     public Rigidbody2D rb;
-
+    
     [Header("Moviment Setup")]
-    public float moveVelocity = 15f;
-    public float runningVelocity = 30f;
-    public float jumpForce = 30f;
+    public SOFloat moveVelocity;
+    public SOFloat runningVelocity;
+    public SOFloat jumpForce;
     public Vector2 friction = new Vector2(.1f, 0);
 
     [Header("Animation Player")]
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
                 rb.transform.DOScaleX(-1f, swipeSideDuration);
             }
 
-            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? -runningVelocity : -moveVelocity, rb.velocity.y);
+            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? -runningVelocity.value : -moveVelocity.value, rb.velocity.y);
         }
         else if (Input.GetKey(moveRightInput))
         {
@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
                 rb.transform.DOScaleX(1f, swipeSideDuration);
             }
 
-            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? +runningVelocity : moveVelocity, rb.velocity.y);
+            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? +runningVelocity.value : moveVelocity.value, rb.velocity.y);
         }
         else
         {
@@ -116,7 +116,7 @@ public class Player : MonoBehaviour
             {
                 landed = false;
                 animator.SetBool(boolJump, true);
-                rb.velocity = Vector2.up * jumpForce;
+                rb.velocity = Vector2.up * jumpForce.value;
                 rb.transform.localScale = Vector2.one;
             }
 

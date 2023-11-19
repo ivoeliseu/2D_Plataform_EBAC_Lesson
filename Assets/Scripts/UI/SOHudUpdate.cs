@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class HudManager : MonoBehaviour
+public class SOHudUpdate : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI hudCoinsAmount;
 

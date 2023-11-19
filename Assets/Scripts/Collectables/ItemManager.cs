@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class ItemManager : Singleton<ItemManager>
 {
-    public int coins;
+    public SOInt coins;
     public string compareTag = "Coins";
-    public HudManager hudManager;
+    public SOHudUpdate hudManager;
 
     private void Start()
     {
@@ -17,13 +17,13 @@ public class ItemManager : Singleton<ItemManager>
 
     private void Reset()
     {
-        coins = 0;
+        coins.value = 0;
     }
 
-    public void AddCoins()
+    public void AddCoins(int value)
     {
-        coins++;
-        hudManager.UpdateCoins(coins);
+        coins.value += value;
+        hudManager.UpdateCoins(coins.value);
     }
 
 }

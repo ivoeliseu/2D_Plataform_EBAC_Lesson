@@ -9,6 +9,8 @@ public class EnemyScript : MonoBehaviour
     public string triggerAttack = "Attack";
     public string triggerDeath = "Death";
     public HpScript healthBase;
+    [SerializeField] 
+    private BoxCollider2D _boxCollider2D;
 
     public float timeToDestroy = 1f;
 
@@ -18,10 +20,16 @@ public class EnemyScript : MonoBehaviour
         {
             healthBase.OnKill += OnEnemyKill;
         }
+
+        if (_boxCollider2D == null)
+        {
+            _boxCollider2D = GetComponent<BoxCollider2D>();
+        }
     }
 
     private void OnEnemyKill()
     {
+        _boxCollider2D.enabled = false;
         healthBase.OnKill -= OnEnemyKill;
         PlayKillAnimation();
         Destroy(gameObject, timeToDestroy);
