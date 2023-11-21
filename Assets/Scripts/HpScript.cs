@@ -1,16 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class HpScript : MonoBehaviour
 {
     public Action OnKill;
+    public int _currentLife;
 
     public int startHp = 1;
-    public bool destroyOnKill = true;
+    public bool destroyOnKill = false;
     public float delayToKill = 2f;
-    private int _currentLife;
+
     private bool _isDead = false;
 
     [SerializeField] private FlashColor _flashColor;
@@ -29,6 +31,7 @@ public class HpScript : MonoBehaviour
     {
         _isDead = false;
         _currentLife = startHp;
+
     }
 
     public void Damage(int damage)
@@ -36,6 +39,7 @@ public class HpScript : MonoBehaviour
         if (_isDead) return;
 
         _currentLife -= damage;
+
 
         if (_currentLife <= 0)
         {

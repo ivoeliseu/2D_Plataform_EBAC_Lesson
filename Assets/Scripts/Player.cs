@@ -7,31 +7,10 @@ using System;
 
 public class Player : MonoBehaviour
 {
+    public SOPlayerSetup playerSetup;
     public HpScript healthBase;
     public Rigidbody2D rb;
-    
-    [Header("Moviment Setup")]
-    public SOFloat moveVelocity;
-    public SOFloat runningVelocity;
-    public SOFloat jumpForce;
-    public Vector2 friction = new Vector2(.1f, 0);
-
-    [Header("Animation Player")]
-    public string boolRun = "Run";
-    public string boolJump = "Jump";
-    public string triggerDeath = "Death";
     public Animator animator;
-    public float swipeSideDuration = 0;
-    public bool landed = false;
-    public string lookingTag = "Ground";
-
-
-    [Header("Controls Input")]
-    public KeyCode jumpInput = KeyCode.Space;
-    public KeyCode moveLeftInput = KeyCode.LeftArrow;
-    public KeyCode moveRightInput = KeyCode.RightArrow;
-    public KeyCode runningInput = KeyCode.LeftShift;
-
 
     private void Awake()
     {
@@ -49,7 +28,7 @@ public class Player : MonoBehaviour
     private void OnPlayerKill()
     {
         healthBase.OnKill -= OnPlayerKill;
-        animator.SetTrigger(triggerDeath);
+        animator.SetTrigger(playerSetup.triggerDeath);
     }
     void Update()
     {
@@ -60,33 +39,33 @@ public class Player : MonoBehaviour
     {
         // Inputs de movimentação
 
-        if (Input.GetKey(moveLeftInput))
+        if (Input.GetKey(playerSetup.moveLeftInput))
         {
-            animator.SetBool(boolRun, true);
+            animator.SetBool(playerSetup.boolRun, true);
             if (rb.transform.localScale.x != -1)
             {
-                rb.transform.DOScaleX(-1f, swipeSideDuration);
+                rb.transform.DOScaleX(-1f, playerSetup.swipeSideDuration);
             }
 
-            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? -runningVelocity.value : -moveVelocity.value, rb.velocity.y);
+            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? -playerSetup.runningVelocity : -playerSetup.moveVelocity, rb.velocity.y);
         }
-        else if (Input.GetKey(moveRightInput))
+        else if (Input.GetKey(playerSetup.moveRightInput))
         {
-            animator.SetBool(boolRun, true);
+            animator.SetBool(playerSetup.boolRun, true);
             if (rb.transform.localScale.x != 1)
             {
-                rb.transform.DOScaleX(1f, swipeSideDuration);
+                rb.transform.DOScaleX(1f, playerSetup.swipeSideDuration);
             }
 
-            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? +runningVelocity.value : moveVelocity.value, rb.velocity.y);
+            rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? playerSetup.runningVelocity : playerSetup.moveVelocity, rb.velocity.y);
         }
         else
         {
-            animator.SetBool(boolRun, false);
+            animator.SetBool(playerSetup.boolRun, false);
         }
 
         // Se verificar que Input de correr está pressionado, muda a velocidade da animação
-        if (Input.GetKey(runningInput))
+        if (Input.GetKey(playerSetup.runningInput))
         {
             animator.speed = 2.5f;
         }
@@ -99,32 +78,35 @@ public class Player : MonoBehaviour
         // No objeto dentro da Unity é necessário o objeto da plataforma ter um material de physics
         if (rb.velocity.x > 0)
         {
-            rb.velocity -= friction;
+            rb.velocity -= playerSetup.friction;
         }
         else if (rb.velocity.x < 0)
         {
-            rb.velocity += friction;
+            rb.velocity += playerSetup.friction;
         }
     }
 
     // Função que faz o jogador pular
     private void PlayerJump()
     {
-        if (Input.GetKeyDown(jumpInput))
+        if (Input.GetKeyDown(playerSetup.jumpInput))
         {
-            if (landed)
+            if (playerSetup.landed)
             {
-                landed = false;
-                animator.SetBool(boolJump, true);
-                rb.velocity = Vector2.up * jumpForce.value;
-                rb.transform.localScale = Vector2.one;
+                if (rb.transform.localScale.x != 1)
+                {
+                    rb.transform.DOScaleX(-1f, playerSetup.swipeSideDuration);
+                }
+                playerSetup.landed = false;
+                animator.SetBool(playerSetup.boolJump, true);
+                rb.velocity = Vector2.up * playerSetup.jumpForce;
             }
+        
 
             // DOTween.Kill(rb.transform);  *** ANTIGA CODIFICAÇÃO DE ANIMAÇÃO ***
             // landed = false; *** ANTIGA CODIFICAÇÃO DE ANIMAÇÃO ***
             // JumpingAnimation(); *** ANTIGA CODIFICAÇÃO DE ANIMAÇÃO ***
         }
-
     }
 
     /*  *** ANTIGA CODIFICAÇÃO DE ANIMAÇÃO ***
@@ -148,14 +130,14 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (landed) return;
-        if (collision.transform.tag == lookingTag)
+        if (playerSetup.landed) return;
+        if (collision.transform.tag == playerSetup.groundTag)
         {
             // Debug.Log("Player colidiu com o terreno");
             // DOTween.Kill(rb.transform);
             // OnLandingAnimation();
-            animator.SetBool(boolJump, false);
-            landed = true;
+            animator.SetBool(playerSetup.boolJump, false);
+            playerSetup.landed = true;
         }
     }
 
