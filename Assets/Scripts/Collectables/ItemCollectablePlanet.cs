@@ -6,9 +6,9 @@ public class ItemCollectablePlanet : ItemCollectableBase
 {
     public int planetValue;
 
-    protected override void OnCollect()
+    protected override void Collect()
     {
-        base.OnCollect();
+        base.Collect();
         ItemManager.Instance.AddPlanets(planetValue);
     }
 }

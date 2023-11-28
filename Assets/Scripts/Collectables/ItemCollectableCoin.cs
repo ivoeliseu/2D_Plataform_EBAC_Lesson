@@ -5,9 +5,10 @@ using UnityEngine;
 public class ItemCollectableCoin : ItemCollectableBase
 {
     public int coinValue = 1;
-    protected override void OnCollect()
+    protected override void Collect()
     {
-        base.OnCollect();
+        base.Collect();
         ItemManager.Instance.AddCoins(coinValue);
+        Debug.Log("Coletou moeda");
     }
 }
