@@ -20,8 +20,9 @@ MonoBehaviour:
   boolJump: Jump
   triggerDeath: Death
   swipeSideDuration: 0
-  landed: 1
-  groundTag: Ground
+  collider2D: {fileID: 0}
+  distanceToGround: 1
+  spaceToGround: 0
   jumpInput: 32
   moveLeftInput: 276
   moveRightInput: 275

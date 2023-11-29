@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3545947659453511648}
   - component: {fileID: 7108694671745765773}
   m_Layer: 0
-  m_Name: PFB_ParticleSystem_Dust
+  m_Name: PFB_ParticleSystem_WalkDust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public HpScript healthBase;
     public Rigidbody2D rb;
     public Animator animator;
+    public ParticleSystem jumpVFX;
 
     private void Awake()
     {
@@ -23,7 +24,19 @@ public class Player : MonoBehaviour
         {
             healthBase = GetComponent<HpScript>();
         }
+
+        if (playerSetup.collider2D != null)
+        {
+            playerSetup.distanceToGround = playerSetup.collider2D.bounds.extents.y;
+        }
     }
+
+    private bool IsGrounded()
+    {
+        Debug.DrawRay(transform.position, -Vector2.up, Color.magenta, playerSetup.distanceToGround + playerSetup.spaceToGround);
+        return Physics2D.Raycast(transform.position, -Vector2.up, playerSetup.distanceToGround + playerSetup.spaceToGround);
+    }
+
 
     private void OnPlayerKill()
     {
@@ -32,6 +45,7 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
+        IsGrounded();
         PlayerJump();
         PlayerMoviment();
     }
@@ -89,24 +103,35 @@ public class Player : MonoBehaviour
     // Função que faz o jogador pular
     private void PlayerJump()
     {
-        if (Input.GetKeyDown(playerSetup.jumpInput))
+        if (Input.GetKeyDown(playerSetup.jumpInput) && IsGrounded())
         {
-            if (playerSetup.landed)
-            {
+            //if (playerSetup.landed)
+            //{
                 if (rb.transform.localScale.x != 1)
                 {
                     rb.transform.DOScaleX(-1f, playerSetup.swipeSideDuration);
                 }
-                playerSetup.landed = false;
+                //playerSetup.landed = false;
                 animator.SetBool(playerSetup.boolJump, true);
                 rb.velocity = Vector2.up * playerSetup.jumpForce;
-            }
+                
+
+
+                 PlayJumpVFX();
+
+            //}
         
 
             // DOTween.Kill(rb.transform);  *** ANTIGA CODIFICAÇÃO DE ANIMAÇÃO ***
             // landed = false; *** ANTIGA CODIFICAÇÃO DE ANIMAÇÃO ***
             // JumpingAnimation(); *** ANTIGA CODIFICAÇÃO DE ANIMAÇÃO ***
         }
+        
+    }
+
+    private void PlayJumpVFX()
+    {
+        if (jumpVFX != null) jumpVFX.Play();
     }
 
     /*  *** ANTIGA CODIFICAÇÃO DE ANIMAÇÃO ***
@@ -128,6 +153,8 @@ public class Player : MonoBehaviour
     }
     */
 
+
+    /* ANTIGA CHECAGEM DE COLISÃO COM O CHÃO
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (playerSetup.landed) return;
@@ -140,6 +167,7 @@ public class Player : MonoBehaviour
             playerSetup.landed = true;
         }
     }
+    */
 
     public void DestroyMe()
     {
