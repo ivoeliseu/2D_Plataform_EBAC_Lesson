@@ -20,7 +20,9 @@ public class SOPlayerSetup : ScriptableObject
 
     //ANTIGA CHECAGEM PARA IMPEDIR PULOS NO AR
     //public bool landed = false;
-    //public string groundTag = "Ground";
+
+    //Váriavel de checagem para resetar animação de andar
+    public string groundTag = "Ground";
 
     [Header("Jump Setup")]
     public Collider2D collider2D;

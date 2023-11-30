@@ -33,7 +33,8 @@ public class Player : MonoBehaviour
 
     private bool IsGrounded()
     {
-        Debug.DrawRay(transform.position, -Vector2.up, Color.magenta, playerSetup.distanceToGround + playerSetup.spaceToGround);
+        // Para realizar DEBUG e saber onde está sendo realizada a checagem:
+        // Debug.DrawRay(transform.position, -Vector2.up, Color.magenta, playerSetup.distanceToGround + playerSetup.spaceToGround);
         return Physics2D.Raycast(transform.position, -Vector2.up, playerSetup.distanceToGround + playerSetup.spaceToGround);
     }
 
@@ -52,6 +53,7 @@ public class Player : MonoBehaviour
     private void PlayerMoviment()
     {
         // Inputs de movimentação
+        
 
         if (Input.GetKey(playerSetup.moveLeftInput))
         {
@@ -62,6 +64,7 @@ public class Player : MonoBehaviour
             }
 
             rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? -playerSetup.runningVelocity : -playerSetup.moveVelocity, rb.velocity.y);
+            
         }
         else if (Input.GetKey(playerSetup.moveRightInput))
         {
@@ -72,6 +75,7 @@ public class Player : MonoBehaviour
             }
 
             rb.velocity = new Vector2((Input.GetKey(KeyCode.LeftShift)) ? playerSetup.runningVelocity : playerSetup.moveVelocity, rb.velocity.y);
+            
         }
         else
         {
@@ -131,8 +135,10 @@ public class Player : MonoBehaviour
 
     private void PlayJumpVFX()
     {
-        if (jumpVFX != null) jumpVFX.Play();
+        //if (jumpVFX != null) jumpVFX.Play();
+        VFXManager.Instance.PlayVFXByType(VFXManager.VFXType.JUMP, transform.position);
     }
+    
 
     /*  *** ANTIGA CODIFICAÇÃO DE ANIMAÇÃO ***
     
@@ -154,20 +160,20 @@ public class Player : MonoBehaviour
     */
 
 
-    /* ANTIGA CHECAGEM DE COLISÃO COM O CHÃO
+    //CHECAGEM DE COLISÃO COM O CHÃO
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (playerSetup.landed) return;
+        //if (playerSetup.landed) return;
         if (collision.transform.tag == playerSetup.groundTag)
         {
             // Debug.Log("Player colidiu com o terreno");
             // DOTween.Kill(rb.transform);
             // OnLandingAnimation();
             animator.SetBool(playerSetup.boolJump, false);
-            playerSetup.landed = true;
+            //playerSetup.landed = true;
         }
     }
-    */
+    
 
     public void DestroyMe()
     {
