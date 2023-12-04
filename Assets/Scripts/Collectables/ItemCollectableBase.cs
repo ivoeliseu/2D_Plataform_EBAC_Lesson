@@ -11,6 +11,9 @@ public class ItemCollectableBase : MonoBehaviour
     public GameObject graphicItem;
     public CircleCollider2D _itemCollider;
 
+    [Header("Sounds")]
+    public AudioSource audioSource;
+
     private void Awake()
     {
         //if (particle != null) particle.transform.SetParent(null);
@@ -32,11 +35,17 @@ public class ItemCollectableBase : MonoBehaviour
             _itemCollider.enabled = false;
         }
         PlayParticle();
+        PlayAudio();
         Invoke(nameof(HideObject), hideItemTimer);
+        
         
     }
 
 
+    protected virtual void PlayAudio()
+    {
+        if (audioSource != null) audioSource.Play();
+    }
 
     protected virtual void PlayParticle()
     {
