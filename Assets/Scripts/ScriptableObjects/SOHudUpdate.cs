@@ -9,8 +9,8 @@ using UnityEngine.UIElements;
 
 public class SOHudUpdate : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI hudCoinsAmount;
-    [SerializeField] private TextMeshProUGUI hudPlanetsAmount;
+    [SerializeField] public TextMeshProUGUI hudCoinsAmount;
+    [SerializeField] public TextMeshProUGUI hudPlanetsAmount;
 
     public void UpdateCoins(int value) 
     {

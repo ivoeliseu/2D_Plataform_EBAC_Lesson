@@ -23,6 +23,7 @@ public class FlashColor : MonoBehaviour
         }
     }
 
+    /*
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.A))
@@ -30,6 +31,7 @@ public class FlashColor : MonoBehaviour
             Flash();
         }
     }
+    */
 
     public void Flash()
     {

@@ -9,6 +9,6 @@ public class ItemCollectableCoin : ItemCollectableBase
     {
         base.Collect();
         ItemManager.Instance.AddCoins(coinValue);
-        Debug.Log("Coletou moeda");
+        //Debug.Log("Coletou moeda");
     }
 }

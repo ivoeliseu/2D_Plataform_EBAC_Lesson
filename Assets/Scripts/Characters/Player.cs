@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public Animator animator;
     public ParticleSystem jumpVFX;
+    public AudioPlayerHelper jumpSFX;
 
     private void Awake()
     {
@@ -44,6 +45,7 @@ public class Player : MonoBehaviour
         healthBase.OnKill -= OnPlayerKill;
         animator.SetTrigger(playerSetup.triggerDeath);
     }
+
     void Update()
     {
         IsGrounded();
@@ -111,17 +113,17 @@ public class Player : MonoBehaviour
         {
             //if (playerSetup.landed)
             //{
-                if (rb.transform.localScale.x != 1)
-                {
-                    rb.transform.DOScaleX(-1f, playerSetup.swipeSideDuration);
-                }
-                //playerSetup.landed = false;
-                animator.SetBool(playerSetup.boolJump, true);
-                rb.velocity = Vector2.up * playerSetup.jumpForce;
-                
+            if (rb.transform.localScale.x != 1)
+            {
+                rb.transform.DOScaleX(-1f, playerSetup.swipeSideDuration);
+            }
+            //playerSetup.landed = false;
+            animator.SetBool(playerSetup.boolJump, true);
+            rb.velocity = Vector2.up * playerSetup.jumpForce;
 
 
-                 PlayJumpVFX();
+            jumpSFX.Play();        
+            PlayJumpVFX();
 
             //}
         
